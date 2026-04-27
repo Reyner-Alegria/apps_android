@@ -1,3 +1,4 @@
+// Made by Reyner Carlos Silva Alegria
 import 'dart:math';
 import 'package:flutter/material.dart';
 
@@ -29,6 +30,10 @@ class CalculadoraCientificaPage extends StatefulWidget {
 }
 
 class _CalculadoraCientificaPageState extends State<CalculadoraCientificaPage> {
+  static const Color numberColor = Color(0xFFD4D4D2);
+  static const Color operatorColor = Color(0xFFFF9500);
+  static const Color functionColor = Color(0xFF505050);
+
   String display = '0';
   String _expression = '';
 
@@ -156,12 +161,12 @@ class _CalculadoraCientificaPageState extends State<CalculadoraCientificaPage> {
         children: [
           Expanded(
             child: Container(
-              color: theme.colorScheme.primaryContainer,
+              color: Colors.white,
               padding: const EdgeInsets.all(24),
               alignment: Alignment.bottomRight,
               child: Text(
                 display,
-                style: const TextStyle(fontSize: 44, fontWeight: FontWeight.w500),
+                style: const TextStyle(fontSize: 44, fontWeight: FontWeight.w500, color: Colors.black),
                 maxLines: 2,
                 textAlign: TextAlign.right,
               ),
@@ -246,12 +251,14 @@ class _CalculadoraCientificaPageState extends State<CalculadoraCientificaPage> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: row.map((label) {
                 final color = _buttonColor(label);
+                final foreground = (color == operatorColor || color == functionColor) ? Colors.white : Colors.black;
                 return Expanded(
                   child: Padding(
                     padding: const EdgeInsets.all(4),
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: color,
+                        foregroundColor: foreground,
                         textStyle: const TextStyle(fontSize: 18),
                       ),
                       onPressed: () => _onButtonPressed(label),
@@ -314,14 +321,10 @@ class _CalculadoraCientificaPageState extends State<CalculadoraCientificaPage> {
   }
 
   Color _buttonColor(String label) {
-    if (label == 'C' || label == 'DEL') return Colors.red.shade400;
-    if (label == '=' || label == '+' || label == '-' || label == '×' || label == '÷' || label == '^' || label == '%') {
-      return Colors.deepPurple;
-    }
-    if (['sin', 'cos', 'tan', '√', 'ln', 'log', 'x²', 'ANS', 'π', 'e'].contains(label)) {
-      return Colors.blueGrey;
-    }
-    return Colors.grey.shade800;
+    if (['C', 'DEL'].contains(label)) return numberColor;
+    if (['=', '+', '-', '×', '÷', '^', '%'].contains(label)) return operatorColor;
+    if (['sin', 'cos', 'tan', '√', 'ln', 'log', 'x²', 'ANS', 'π', 'e'].contains(label)) return functionColor;
+    return numberColor;
   }
 }
 
