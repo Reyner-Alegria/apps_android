@@ -423,7 +423,7 @@ class _ExpressionParser {
       if (_pos >= _expr.length - 1) break;
       _nextToken();
     }
-    final token = _expr.substring(start, _pos + 1);
+    final token = _expr.substring(start, _pos);
     final value = double.tryParse(token);
     if (value == null) throw FormatException('Número inválido: $token');
     _nextToken();
